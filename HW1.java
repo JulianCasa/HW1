@@ -89,6 +89,36 @@ public class HW1 {
 
             // YOUR CODE GOES HERE
 
+            //Creates Nodes needed to traverse the linked list
+            Node cursor = this.head;
+            Node previousNode = null;
+
+            //Loops through the Linked List until it reaches the end, which is when the cursor becomes null
+            while (cursor != null){
+
+                /*The program then checks to see if the current cursor meets the removal requirement
+                 * If it doesn't it continues through the Linked List
+                */
+                if (cursor.data < ltValue){
+
+                    /*On the chance that the first item in the Linked List meets the removal requirement
+                     * the program sets the next node as the new head. Otherwise it sets the previous node's
+                     * next field as the current cursors next field. It then continues through the Linked List
+                    */
+                   if (previousNode == null){
+                    this.head = cursor.next;
+                   }
+                   else{
+                    previousNode = cursor.next;
+                   }
+
+                   cursor = cursor.next;
+                }
+                else{
+                previousNode = cursor;
+                cursor = cursor.next;
+                }
+            }
             return;
         }
 
@@ -101,6 +131,27 @@ public class HW1 {
         public void removeElement ( int value ) {
 
             // YOUR CODE GOES HERE
+
+            //Creates Nodes needed to traverse the linked list
+            Node cursor = this.head;
+            Node previousNode = null;
+
+            //Loops through the Linked List until it reaches the end, which is when the cursor becomes null
+            while (cursor != null){
+
+                /*If the current cursor meets the removal requirements it skips over the current cursor and reassigns the previous
+                 *next field. Otherwise it continues the previousNode. Regardless of what was removed or not the cursor will continue through
+                */ 
+                if (cursor.data == value){
+                    previousNode.next = cursor.next;
+                }
+                else{
+                    previousNode = cursor;
+                }
+
+                cursor = cursor.next;
+            }
+            
 
             return;
         }
@@ -161,7 +212,56 @@ public class HW1 {
             input = input.toLowerCase().replaceAll("\\s+", "");
 
             // Your CODE GOES HERE
-            return false;
+
+            //creates the needed return Variable
+            Boolean isPalindrome = false;
+
+            //The for loop adds each character of the inputted string as its own element in the stack
+            for (int i = 0; i < input.length(); i++) {
+                stack.push(input.charAt(i));
+            }
+
+            //The program checks the size of the stack and determines whether it is odd or even 
+            int stackSize = stack.size();
+            if (stackSize % 2 == 0){
+
+                /*If the stack size is even, it creates an extra stack. It then stores half of that stack in the new
+                 * one and checks if the two stacks are equal. If they are, it sets the boolean variable to true
+                 * and returns said variable
+                 */
+                Stack<Character> halfStack2 = new Stack<>();
+
+                for (int i = 0; i < stackSize/2; i++){
+                    halfStack2.push(stack.pop());
+                }
+
+                if (halfStack2.equals(stack)){
+                    isPalindrome = true;
+                }
+
+            }
+            else{
+                /*When the stack size is odd, it similarly splits the character stack into 2. However,
+                 * the extra middle character is set to the side in its own stack and then compares
+                 * the "left" and "right" stacks to see if they are equal. If they are, it sets the boolean 
+                 * variable to true and returns said variable
+                 */
+                Stack<Character> halfStack3 = new Stack<>();
+                Stack<Character> midStack = new Stack<>();
+
+                for (int i = 0; i < stackSize/2; i++){
+                    halfStack3.push(stack.pop());
+                }
+
+                midStack.push(stack.pop());
+
+                if (halfStack3.equals(stack)){
+                    isPalindrome = true;
+                }
+
+            }
+
+            return isPalindrome;
         }
 
 
@@ -183,7 +283,45 @@ public class HW1 {
         public static int findLargestK(Stack<Integer> stack, int k) {
 
             // YOUR CODE GOES HERE
-            return -1;
+            int largestK = -1;
+
+
+            /*Before doing anything the program checks to see if the stack has elements
+             * and if the element k exists within that stack. If the conditions are met
+             * the program continues, otherwise it returns the value -1 to indicate failure
+            */
+            if (!stack.empty() && stack.contains(k)){
+
+                //Creates a temporary stack to store whatever's been popped
+                Stack<Integer> tempStack = new Stack<>();
+
+                /*The proogram loops through the stack looking for the trget value
+                 * First it creates an Integer variable, topInt, to use during the checks
+                 * It then checks to see if the value if it matches. On a match the program
+                 * sets the return variable as the size - 1 as that would be what the index
+                 * of k would be. Otherwise the top element is popped and stored in the temp stack
+                */
+                while (largestK < 0){
+                    Integer topInt = stack.peek();
+
+                    if (topInt.equals(k)){
+                        largestK = stack.size()-1;
+                    }
+                    else{
+                        tempStack.push(stack.pop());
+                    }
+                }
+
+                /*After finding the element k, the program restores the original stack by looping
+                 * through the temp stack and reversing the process
+                 */
+                while(!tempStack.isEmpty()){
+                    stack.push(tempStack.pop());
+                }
+            }
+
+            //Program returns the index of the value at the furthest index from the bottom
+            return largestK;
         }
 
     }  // End class Stacks
@@ -219,7 +357,7 @@ public class HW1 {
         */
 
         // RETURN THE CORRECT OPTION NUMBER LISTED ABOVE
-        return -1;
+        return 3;
     }
 
 
@@ -240,7 +378,7 @@ public class HW1 {
          */
 
         // RETURN THE CORRECT OPTION LISTED ABOVE
-        return -1;
+        return 2;
     }
 
 }
